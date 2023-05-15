@@ -78,8 +78,8 @@ void main() {
     (tester) async {
       String? copied;
 
-      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-          SystemChannels.platform, (MethodCall methodCall) async {
+      SystemChannels.platform
+          .setMockMethodCallHandler((MethodCall methodCall) async {
         if (methodCall.method == 'Clipboard.setData') {
           copied = (await methodCall.arguments['text']).toString();
         }
@@ -107,8 +107,8 @@ void main() {
     (tester) async {
       String? copied;
 
-      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-          SystemChannels.platform, (MethodCall methodCall) async {
+      SystemChannels.platform
+          .setMockMethodCallHandler((MethodCall methodCall) async {
         if (methodCall.method == 'Clipboard.setData') {
           copied = (await methodCall.arguments['text']).toString();
         }
