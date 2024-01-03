@@ -23,6 +23,12 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
       case PlutoGridGestureType.onTapUp:
         _onTapUp(stateManager);
         break;
+      case PlutoGridGestureType.onMouseHover:
+        _onMouseHover(stateManager);
+        break;
+      case PlutoGridGestureType.onMouseExit:
+        _onMouseExit(stateManager);
+        break;
       case PlutoGridGestureType.onLongPressStart:
         _onLongPressStart(stateManager);
         break;
@@ -58,6 +64,14 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
     } else {
       stateManager.setCurrentCell(cell, rowIdx);
     }
+  }
+
+  void _onMouseHover(PlutoGridStateManager stateManager) {
+    stateManager.setHoveredCell(cell, rowIdx);
+  }
+
+  void _onMouseExit(PlutoGridStateManager stateManager) {
+    stateManager.setHoveredCell(null, null);
   }
 
   void _onLongPressStart(PlutoGridStateManager stateManager) {
@@ -186,6 +200,8 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
 
 enum PlutoGridGestureType {
   onTapUp,
+  onMouseHover,
+  onMouseExit,
   onLongPressStart,
   onLongPressMoveUpdate,
   onLongPressEnd,
@@ -193,6 +209,10 @@ enum PlutoGridGestureType {
   onSecondaryTap;
 
   bool get isOnTapUp => this == PlutoGridGestureType.onTapUp;
+
+  bool get isOnMouseHover => this == PlutoGridGestureType.onMouseHover;
+
+  bool get isOnMouseExit => this == PlutoGridGestureType.onMouseExit;
 
   bool get isOnLongPressStart => this == PlutoGridGestureType.onLongPressStart;
 

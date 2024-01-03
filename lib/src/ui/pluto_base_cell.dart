@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -47,6 +50,14 @@ class PlutoBaseCell extends StatelessWidget
 
   void _handleOnTapUp(TapUpDetails details) {
     _addGestureEvent(PlutoGridGestureType.onTapUp, details.globalPosition);
+  }
+
+  void _handleOnHover(PointerHoverEvent event) {
+    _addGestureEvent(PlutoGridGestureType.onMouseHover, event.position);
+  }
+
+  void _handleOnExit(PointerExitEvent event) {
+    _addGestureEvent(PlutoGridGestureType.onMouseExit, event.position);
   }
 
   void _handleOnLongPressStart(LongPressStartDetails details) {
@@ -105,33 +116,42 @@ class PlutoBaseCell extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      // Essential gestures.
-      onTapUp: _handleOnTapUp,
-      onLongPressStart: _handleOnLongPressStart,
-      onLongPressMoveUpdate: _handleOnLongPressMoveUpdate,
-      onLongPressEnd: _handleOnLongPressEnd,
-      // Optional gestures.
-      onDoubleTap: _onDoubleTapOrNull(),
-      onSecondaryTapDown: _onSecondaryTapOrNull(),
-      child: _CellContainer(
-        cell: cell,
-        rowIdx: rowIdx,
-        row: row,
-        column: column,
-        cellPadding: column.cellPadding ??
-            stateManager.configuration.style.defaultCellPadding,
-        stateManager: stateManager,
-        child: _Cell(
-          stateManager: stateManager,
-          rowIdx: rowIdx,
-          column: column,
-          row: row,
-          cell: cell,
-        ),
-      ),
-    );
+    return
+      MouseRegion(
+        onHover: (event) {
+          _handleOnHover(event);
+        },
+        onExit: (event) {
+          _handleOnExit(event);
+        },
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          // Essential gestures.
+          onTapUp: _handleOnTapUp,
+          onLongPressStart: _handleOnLongPressStart,
+          onLongPressMoveUpdate: _handleOnLongPressMoveUpdate,
+          onLongPressEnd: _handleOnLongPressEnd,
+          // Optional gestures.
+          onDoubleTap: _onDoubleTapOrNull(),
+          onSecondaryTapDown: _onSecondaryTapOrNull(),
+          child: _CellContainer(
+            cell: cell,
+            rowIdx: rowIdx,
+            row: row,
+            column: column,
+            cellPadding: column.cellPadding ??
+                stateManager.configuration.style.defaultCellPadding,
+            stateManager: stateManager,
+            child: _Cell(
+              stateManager: stateManager,
+              rowIdx: rowIdx,
+              column: column,
+              row: row,
+              cell: cell,
+            ),
+          ),
+        )
+      );
   }
 }
 

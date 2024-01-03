@@ -144,6 +144,8 @@ mixin RowState implements IPlutoGridState {
   @override
   int? get currentRowIdx => currentCellPosition?.rowIdx;
 
+  int? get hoveredRowIdx => hoveredCellPosition?.rowIdx;
+
   @override
   PlutoRow? get currentRow {
     if (currentRowIdx == null) {

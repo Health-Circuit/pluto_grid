@@ -173,6 +173,7 @@ class PlutoGridStateChangeNotifier extends PlutoChangeNotifier
 
     setGroupToColumn();
   }
+
 }
 
 /// It manages the state of the [PlutoGrid] and contains methods used by the grid.

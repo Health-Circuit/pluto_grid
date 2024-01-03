@@ -8,6 +8,10 @@ abstract class ICellState {
   /// The position index value of the currently selected cell.
   PlutoGridCellPosition? get currentCellPosition;
 
+  PlutoCell? get hoveredCell;
+
+  PlutoGridCellPosition? get hoveredCellPosition;
+
   PlutoCell? get firstCell;
 
   void setCurrentCellPosition(
@@ -73,6 +77,10 @@ class _State {
   PlutoCell? _currentCell;
 
   PlutoGridCellPosition? _currentCellPosition;
+
+  PlutoCell? _hoveredCell;
+
+  PlutoGridCellPosition? _hoveredCellPosition;
 }
 
 mixin CellState implements IPlutoGridState {
@@ -83,6 +91,12 @@ mixin CellState implements IPlutoGridState {
 
   @override
   PlutoGridCellPosition? get currentCellPosition => _state._currentCellPosition;
+
+  @override
+  PlutoCell? get hoveredCell => _state._hoveredCell;
+
+  @override
+  PlutoGridCellPosition? get hoveredCellPosition => _state._hoveredCellPosition;
 
   @override
   PlutoCell? get firstCell {
@@ -211,6 +225,40 @@ mixin CellState implements IPlutoGridState {
     clearCurrentSelecting(notify: false);
 
     setEditing(autoEditing, notify: false);
+
+    notifyListeners(notify, setCurrentCell.hashCode);
+  }
+
+  void setHoveredCell(
+    PlutoCell? cell,
+    int? rowIdx, {
+    bool notify = true,
+  }) {
+    if ( cell == null && rowIdx == null) {
+      _state._hoveredCell = null;
+      _state._hoveredCellPosition = null;
+      notifyListeners(notify, setCurrentCell.hashCode);
+      return;
+    }
+
+    if (cell == null ||
+        rowIdx == null ||
+        refRows.isEmpty ||
+        rowIdx < 0 ||
+        rowIdx > refRows.length - 1) {
+      return;
+    }
+
+    if (currentCell != null && currentCell!.key == cell.key) {
+      return;
+    }
+
+    _state._hoveredCell = cell;
+
+    _state._hoveredCellPosition = PlutoGridCellPosition(
+      rowIdx: rowIdx,
+      columnIdx: columnIdxByCellKeyAndRowIdx(cell.key, rowIdx),
+    );
 
     notifyListeners(notify, setCurrentCell.hashCode);
   }
