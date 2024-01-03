@@ -116,46 +116,47 @@ class PlutoBaseCell extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+
+    final gestureDetector = GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      // Essential gestures.
+      onTapUp: _handleOnTapUp,
+      onLongPressStart: _handleOnLongPressStart,
+      onLongPressMoveUpdate: _handleOnLongPressMoveUpdate,
+      onLongPressEnd: _handleOnLongPressEnd,
+      // Optional gestures.
+      onDoubleTap: _onDoubleTapOrNull(),
+      onSecondaryTapDown: _onSecondaryTapOrNull(),
+      child: _CellContainer(
+        cell: cell,
+        rowIdx: rowIdx,
+        row: row,
+        column: column,
+        cellPadding: column.cellPadding ??
+            stateManager.configuration.style.defaultCellPadding,
+        stateManager: stateManager,
+        child: _Cell(
+          stateManager: stateManager,
+          rowIdx: rowIdx,
+          column: column,
+          row: row,
+          cell: cell,
+        ),
+      ),
+    );
+
     return
+      stateManager.configuration.enableCellHovering ?
       MouseRegion(
         onHover: (event) {
-          if(stateManager.configuration.enableCellHovering) {
-            _handleOnHover(event);
-          }
+          _handleOnHover(event);
         },
         onExit: (event) {
-          if(stateManager.configuration.enableCellHovering) {
-            _handleOnExit(event);
-          }
+          _handleOnExit(event);
         },
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          // Essential gestures.
-          onTapUp: _handleOnTapUp,
-          onLongPressStart: _handleOnLongPressStart,
-          onLongPressMoveUpdate: _handleOnLongPressMoveUpdate,
-          onLongPressEnd: _handleOnLongPressEnd,
-          // Optional gestures.
-          onDoubleTap: _onDoubleTapOrNull(),
-          onSecondaryTapDown: _onSecondaryTapOrNull(),
-          child: _CellContainer(
-            cell: cell,
-            rowIdx: rowIdx,
-            row: row,
-            column: column,
-            cellPadding: column.cellPadding ??
-                stateManager.configuration.style.defaultCellPadding,
-            stateManager: stateManager,
-            child: _Cell(
-              stateManager: stateManager,
-              rowIdx: rowIdx,
-              column: column,
-              row: row,
-              cell: cell,
-            ),
-          ),
-        )
-      );
+        child: gestureDetector,
+      )
+      : gestureDetector ;
   }
 }
 

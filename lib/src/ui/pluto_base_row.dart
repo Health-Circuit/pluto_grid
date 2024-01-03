@@ -390,20 +390,20 @@ class _AnimatedOrNormalContainer extends StatelessWidget {
             decoration: decoration,
             child: child,
           )
-        : MouseRegion(
-            onHover: (event) {
-              if(stateManager.configuration.enableRowHovering) {
-                _handleOnHover(event);
-              }
-            },
-            onExit: (event) {
-              if(stateManager.configuration.enableRowHovering) {
-                _handleOnExit(event);
-              }
-            },
-            child: DecoratedBox(decoration: decoration, child: child)
-
-        );
+        : (stateManager.configuration.enableRowHovering
+            ? MouseRegion(
+                onHover: (event) {
+                  _handleOnHover(event);
+                },
+                onExit: (event) {
+                  _handleOnExit(event);
+                },
+                child: DecoratedBox(decoration: decoration, child: child)
+              )
+            : DecoratedBox(
+                decoration: decoration,
+                child: child,
+              ));
   }
 
   void _handleOnHover(PointerHoverEvent event) {
