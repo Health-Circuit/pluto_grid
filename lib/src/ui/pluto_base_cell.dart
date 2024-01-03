@@ -119,12 +119,12 @@ class PlutoBaseCell extends StatelessWidget
     return
       MouseRegion(
         onHover: (event) {
-          if(stateManager.configuration.enableHovering) {
+          if(stateManager.configuration.enableCellHovering) {
             _handleOnHover(event);
           }
         },
         onExit: (event) {
-          if(stateManager.configuration.enableHovering) {
+          if(stateManager.configuration.enableCellHovering) {
             _handleOnExit(event);
           }
         },

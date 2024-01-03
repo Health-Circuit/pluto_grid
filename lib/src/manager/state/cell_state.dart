@@ -241,6 +241,18 @@ mixin CellState implements IPlutoGridState {
       return;
     }
 
+    if (cell == null && rowIdx != null
+          && refRows.isNotEmpty && rowIdx >= 0 && rowIdx <= refRows.length - 1
+    ) {
+      _state._hoveredCell = refRows[rowIdx].cells[refColumns.first.field];
+      _state._hoveredCellPosition = PlutoGridCellPosition(
+        rowIdx: rowIdx,
+        columnIdx: 0,
+      );
+      notifyListeners(notify, setCurrentCell.hashCode);
+      return;
+    }
+
     if (cell == null ||
         rowIdx == null ||
         refRows.isEmpty ||

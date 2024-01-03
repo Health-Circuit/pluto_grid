@@ -73,7 +73,9 @@ class PlutoGridConfiguration {
 
   final PlutoGridLocaleText localeText;
 
-  final bool enableHovering;
+  final bool enableRowHovering;
+
+  final bool enableCellHovering;
 
   const PlutoGridConfiguration({
     this.enableMoveDownAfterSelecting = false,
@@ -86,7 +88,8 @@ class PlutoGridConfiguration {
     this.columnFilter = const PlutoGridColumnFilterConfig(),
     this.columnSize = const PlutoGridColumnSizeConfig(),
     this.localeText = const PlutoGridLocaleText(),
-    this.enableHovering = false,
+    this.enableRowHovering = false,
+    this.enableCellHovering = false,
   });
 
   const PlutoGridConfiguration.dark({
@@ -100,7 +103,8 @@ class PlutoGridConfiguration {
     this.columnFilter = const PlutoGridColumnFilterConfig(),
     this.columnSize = const PlutoGridColumnSizeConfig(),
     this.localeText = const PlutoGridLocaleText(),
-    this.enableHovering = false,
+    this.enableRowHovering = false,
+    this.enableCellHovering = false,
   });
 
   void updateLocale() {

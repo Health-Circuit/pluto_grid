@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:pluto_grid/src/manager/event/pluto_grid_row_gesture_event.dart';
 
 import 'ui.dart';
 
@@ -353,6 +355,8 @@ class _RowContainerWidgetState extends PlutoStateWithChange<_RowContainerWidget>
     return _AnimatedOrNormalContainer(
       enable: widget.enableRowColorAnimation,
       decoration: _decoration,
+      rowIdx: widget.rowIdx,
+      stateManager: stateManager,
       child: widget.child,
     );
   }
@@ -365,10 +369,16 @@ class _AnimatedOrNormalContainer extends StatelessWidget {
 
   final BoxDecoration decoration;
 
+  final PlutoGridStateManager stateManager;
+
+  final int rowIdx;
+
   const _AnimatedOrNormalContainer({
     required this.enable,
     required this.child,
     required this.decoration,
+    required this.rowIdx,
+    required this.stateManager,
     Key? key,
   }) : super(key: key);
 
@@ -380,6 +390,37 @@ class _AnimatedOrNormalContainer extends StatelessWidget {
             decoration: decoration,
             child: child,
           )
-        : DecoratedBox(decoration: decoration, child: child);
+        : MouseRegion(
+            onHover: (event) {
+              if(stateManager.configuration.enableRowHovering) {
+                _handleOnHover(event);
+              }
+            },
+            onExit: (event) {
+              if(stateManager.configuration.enableRowHovering) {
+                _handleOnExit(event);
+              }
+            },
+            child: DecoratedBox(decoration: decoration, child: child)
+
+        );
+  }
+
+  void _handleOnHover(PointerHoverEvent event) {
+    stateManager.eventManager!.addEvent(
+      PlutoGridRowGestureEvent(
+        gestureType: PlutoGridGestureType.onMouseHover,
+        rowIdx: rowIdx,
+      ),
+    );
+  }
+
+  void _handleOnExit(PointerExitEvent event) {
+    stateManager.eventManager!.addEvent(
+      PlutoGridRowGestureEvent(
+        gestureType: PlutoGridGestureType.onMouseExit,
+        rowIdx: rowIdx,
+      ),
+    );
   }
 }

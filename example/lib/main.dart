@@ -159,7 +159,7 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
             print(event);
           },
           configuration: const PlutoGridConfiguration(
-            enableHovering: true,
+            enableRowHovering: true,
           ),
         ),
       ),
