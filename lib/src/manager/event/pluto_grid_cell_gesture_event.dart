@@ -49,6 +49,11 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
   }
 
   void _onTapUp(PlutoGridStateManager stateManager) {
+    // if is readonly mode, return.
+    if (stateManager.mode.isReadOnly) {
+      return;
+    }
+
     if (_setKeepFocusAndCurrentCell(stateManager)) {
       return;
     } else if (stateManager.isSelectingInteraction()) {
