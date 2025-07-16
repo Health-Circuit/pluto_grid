@@ -5,14 +5,14 @@ homepage: https://pluto.weblaze.dev
 repository: https://github.com/bosskmk/pluto_grid
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
   flutter: ">=2.5.0"
 
 dependencies:
   flutter:
     sdk: flutter
   intl: ^0.18.0
-  rxdart: ^0.27.7
+  rxdart: ^0.28.0
   collection: ^1.17.0
 
 dev_dependencies:
